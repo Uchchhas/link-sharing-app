@@ -1,14 +1,23 @@
-<script setup lang="ts">
-    import { ref } from 'vue'
+<script setup>
+    import {computed, ref} from 'vue'
     import AppLinkForm from '@/components/shared/AppLinkForm.vue'
     import AppMobilePreview from '@/components/shared/AppMobilePreview.vue'
 
+    const generateId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        let result = ''
+        for (let i = 0; i < 5; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length))
+        }
+        return result
+    }
+
     const links = ref([
-        { platform: '', url: '' }
+        { id: generateId(), platform: '', url: '' }
     ])
 
     const addNewLink = () => {
-        links.value.push({ platform: '', url: '' })
+        links.value.push({ id: generateId(), platform: '', url: '' })
     }
 
     const removeLink = (index) => {
@@ -25,8 +34,8 @@
 <template>
     <main>
         <div class="container mx-auto">
-            <div class="grid grid-cols-[500px_auto] gap-4">
-                <div class="grid place-items-center py-10 px-4 rounded-lg bg-white">
+            <div class="grid grid-cols-[500px_auto] gap-4 items-start">
+                <div class="sticky top-5 flex justify-center py-10 px-4 rounded-lg bg-white">
                     <app-mobile-preview :links="links" />
                 </div>
                 <div class="p-8 rounded-lg bg-white">
@@ -37,7 +46,7 @@
                         Add/Edit/Remove links below and then share all your profiles with the world!
                     </p>
                     <app-link-form
-                        :links="links"
+                        v-model:links="links"
                         @add-new-link="addNewLink"
                         @remove-link="removeLink"
                         @save="saveLinks"

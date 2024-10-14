@@ -14,12 +14,12 @@
     const triggerRef = ref(null)
     const dropdownRef = ref(null)
 
-    const platforms = ['YouTube', 'LinkedIn', 'Facebook']
+    const platforms = ['YouTube', 'LinkedIn', 'Github']
 
     const platformIcons = {
         YouTube: IconYouTube,
         LinkedIn: IconLinkedIn,
-        Facebook: IconGithub
+        Github: IconGithub
     }
 
     const toggleDropdown = () => {
@@ -54,14 +54,23 @@
     <div class="relative">
         <button
             type="button"
-            class="w-full p-2 text-left border border-gray-300 rounded-md focus:border-violet-700 bg-white"
+            class="w-full py-2 px-4 border border-gray-300 focus:border-violet-700 focus:ring-1 ring-violet-700 rounded-md bg-white"
             @click="toggleDropdown"
             ref="triggerRef"
         >
-            <div class="flex items-center">
-                <component :is="platformIcons[modelValue]" class="w-5 h-5 mr-2" v-if="modelValue"/>
+            <span
+                :class="[
+                    `flex items-center`,
+                    modelValue ? 'text-gray-700' : 'text-gray-500'
+                ]"
+            >
+                <component
+                    v-if="modelValue"
+                    :is="platformIcons[modelValue]"
+                    class="w-4 h-4 mr-2 fill-gray-700"
+                />
                 {{ modelValue || 'Select platform' }}
-            </div>
+            </span>
         </button>
         <div
             v-if="isOpen"
